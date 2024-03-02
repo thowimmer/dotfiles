@@ -1,0 +1,9 @@
+[tools]
+usage = "latest"
+kubectl = "latest"
+kubectx = "latest"
+k9s = "latest"
+node = "lts"
+
+[settings]
+disable_tools = ['bun','deno','ruby']

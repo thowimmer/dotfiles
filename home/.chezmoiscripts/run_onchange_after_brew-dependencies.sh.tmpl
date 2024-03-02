@@ -1,0 +1,5 @@
+#!/bin/sh
+# Brewfile hash: {{ include (joinPath .chezmoi.sourceDir "homebrew/Brewfile.tmpl") | sha256sum }}
+brew bundle --force cleanup
+rm "$HOMEBREW_BUNDLE_FILE".lock.json
+brew bundle install -v

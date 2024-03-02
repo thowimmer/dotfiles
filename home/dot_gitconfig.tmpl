@@ -1,0 +1,10 @@
+[user]
+	signingkey = {{ .gitSigningKey | quote }}
+	name = {{ .gitName | quote }}
+	email = {{ .gitEmail | quote }}
+[core]
+	excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
+[commit]
+	gpgsign = true
+[sequence]
+	editor = interactive-rebase-tool

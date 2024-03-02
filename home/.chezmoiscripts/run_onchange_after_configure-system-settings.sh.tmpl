@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -eufo pipefail
+
+# see https://github.com/mathiasbynens/dotfiles/blob/main/.macos
+defaults write NSGlobalDomain AppleInterfaceStyle Dark
+defaults write NSGlobalDomain AppleHighlightColor -string "0.847059 0.847059 0.862745 Graphite"
+defaults write NSGlobalDomain AppleLanguages -array en-AT
+defaults write NSGlobalDomain AppleLocale en-AT
+
+# see https://macos-defaults.com/
+##########################################
+# Dock
+##########################################
+defaults write com.apple.dock "tilesize" -int "42"
+defaults write com.apple.dock "autohide" -bool "true"
+defaults write com.apple.dock "show-recents" -bool "false"
+killall Dock
+
+##########################################
+# Finder
+##########################################
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
+defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool "true"
+killall Finder
+
+##########################################
+# Mission Control
+##########################################
+defaults write com.apple.dock "mru-spaces" -bool "false"
+killall Dock
+
+##########################################
+# iTerm2 config
+# https://shyr.io/blog/sync-iterm2-configs
+##########################################
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "{{ .chezmoi.sourceDir }}"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true

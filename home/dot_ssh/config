@@ -1,0 +1,6 @@
+Host github.com
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/id_rsa_yubikey-5c-nfc.pub
+Host gitlab.com
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/id_rsa_yubikey-5c-nfc.pub 

@@ -1,0 +1,179 @@
+##########################################
+# Homebrew
+# https://docs.brew.sh
+##########################################
+export PATH="$HOME/homebrew/bin:$PATH"
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+export HOMEBREW_PREFIX="$(brew --prefix)"
+export HOMEBREW_HOME=$HOMEBREW_PREFIX
+export PATH="$HOMEBREW_PREFIX/sbin:$PATH"
+export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+
+## homebrew-bundle
+export HOMEBREW_BUNDLE_FILE="$HOMEBREW_HOME/Brewfile"
+
+## shell completion (see https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh)
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
+## Upgrade all dependencies
+upgrade() {
+  brew upgrade --no-quarantine
+  brew cu --no-quarantine --all -i
+  brew cleanup -v -s --prune=all
+}
+
+##########################################
+# chezmoi
+# https://www.chezmoi.io
+##########################################
+#autoload -Uz compinit
+#compinit
+source <(chezmoi completion zsh)
+
+##########################################
+# STARSHIP
+# https://starship.rs/
+##########################################
+eval "$(starship init zsh)"
+
+##########################################
+# Antidote
+# https://getantidote.github.io
+##########################################
+source $HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh
+antidote load
+
+##########################################
+# eza
+# https://github.com/eza-community/eza
+##########################################
+alias l="eza -T -l --icons --git --git-repos -a -I 'node_modules|.git' -L 1";
+alias ll="l -L 10";
+
+##########################################
+# fzf
+# https://github.com/junegunn/fzf
+##########################################
+if [[ ! "$PATH" == *$HOMEBREW_PREFIX/opt/fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}$HOMEBREW_PREFIX/opt/fzf/bin"
+fi
+
+## Auto-completion
+source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh"
+
+## Key bindings
+source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+
+##########################################
+# bat
+# https://github.com/junegunn/fzf
+##########################################
+alias cat="bat";
+
+##########################################
+# mise
+# https://mise.jdx.dev/
+##########################################
+# Activate mise and ensure compatibility with IDEs (see https://mise.jdx.dev/ide-integration.html#ide-integration)
+if [[ -o interactive ]]; then
+    eval "$(mise activate zsh)"
+else
+    eval "$(mise activate zsh --shims)"
+fi
+ln -sf ~/.local/share/mise ~/.asdf #Ensure that mise packages are catched up by IntelliJ
+
+##########################################
+# GPG & YubiKey
+# https://github.com/drduh/YubiKey-Guide?tab=readme-ov-file#ssh
+#########################################
+export KEYID=0x157484D2F4ECF91D
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+## launch gpg-agent
+gpgconf --launch gpg-agent
+
+## gpg crypto functions using YubiKey
+yenc() {
+  output="$1.$(date +%s).enc"
+  gpg --armor --encrypt --output ${output} --recipient $KEYID "${1}" && echo "${1} -> ${output}"
+}
+
+ydec() {
+  output=$(echo "${1}" | rev | cut -c16- | rev)
+  gpg --decrypt --output ${output} "${1}" && echo "${1} -> ${output}"
+}
+
+ysign() {
+  output="$1.$(date +%s).asc"
+  gpg --armor --clearsign --output ${output} "${1}" && echo "${1} -> ${output}"
+}
+
+yverify() {
+  gpg --verify "${1}"
+}
+
+yencsign() {
+  output="$1.$(date +%s).asc"
+  gpg --armor --encrypt --sign --output ${output} --recipient $KEYID "${1}" && echo "${1} -> ${output}"
+}
+
+## note: key must be ultimately trusted - see https://github.com/drduh/YubiKey-Guide?tab=readme-ov-file#using-keys
+
+##########################################
+# kubectl
+##########################################
+## shell completion (see https://kubernetes.io/docs/reference/kubectl/generated/kubectl_completion/)
+if type kubectl &>/dev/null
+then
+  source <(kubectl completion zsh)
+fi
+
+##########################################
+# helm
+##########################################
+if type helm &>/dev/null
+then
+  source <(helm completion zsh)
+fi
+
+##########################################
+# shred
+##########################################
+## recursive shred (see #see https://unix.stackexchange.com/questions/27027/how-do-i-recursively-shred-an-entire-directory-tree)
+srm() {
+  find "$1" -type f -exec shred -uvz {} \;
+  rm -rf $1
+}
+
+##########################################
+# Dynatrace Monaco CLI
+# https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/installation
+##########################################
+export PATH="$HOME/tools/monaco/bin:$PATH"
+if type monaco &>/dev/null
+then
+  source <(monaco completion zsh)
+fi
+
+##########################################
+# Rancher Desktop
+# https://rancherdesktop.io/
+##########################################
+export PATH="/Users/thomas.wimmer/.rd/bin:$PATH"
+
+
+##########################################
+# Whalebrew
+# https://github.com/whalebrew/whalebrew
+##########################################
+export WHALEBREW_CONFIG_DIR=$HOME/.whalebrew
+export WHALEBREW_INSTALL_PATH=$WHALEBREW_CONFIG_DIR/bin
+#mkdir -p $WHALEBREW_INSTALL_PATH
+export PATH="$WHALEBREW_INSTALL_PATH:$PATH"
