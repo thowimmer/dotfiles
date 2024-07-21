@@ -32,9 +32,19 @@ vscode "donjayamanne.githistory"
 #Need to manually install whalebrew images (env config not picked up for some reason)
 #whalebrew "whalebrew/graphviz"
 
-##########################################
-# manual installation required (install with priviledges)
-##########################################
-#cask "raycast"
-#cask "hiddenbar"
-#https://cordlessdog.com/stay/
+
+####################################################################################
+# Brew packages which require special priviledges (install manually otherwise)
+####################################################################################
+{{ if .isPriviledged }}
+cask "raycast"
+cask "hiddenbar"
+{{ else }}
+# https://www.raycast.com/
+# https://github.com/dwarvesf/hidden
+{{ end }}
+
+####################################################################################
+# Non-brew packages
+####################################################################################
+# https://cordlessdog.com/stay/
