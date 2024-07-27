@@ -4,7 +4,7 @@ setopt HIST_IGNORE_SPACE
 # Homebrew
 # https://docs.brew.sh
 ##########################################
-export PATH="$HOME/homebrew/bin:$PATH"
+export PATH="$HOME/.homebrew/bin:$PATH"
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 export HOMEBREW_PREFIX="$(brew --prefix)"
 export HOMEBREW_HOME=$HOMEBREW_PREFIX

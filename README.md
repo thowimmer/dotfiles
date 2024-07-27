@@ -1,8 +1,12 @@
 # My dotfiles managed by chezmoi
 
 ## Installation
-1. Install brew as non-root
-    * https://docs.brew.sh/Installation#untar-anywhere-unsupported
+1. Install brew as non-root (see [instructions](https://docs.brew.sh/Installation#untar-anywhere-unsupported])
+    * `cd ~`
+    * `mkdir .homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip-components 1 -C .homebrew`
+    * eval "$(.homebrew/bin/brew shellenv)"
+    * brew update --force --quiet
+    * chmod -R go-w "$(brew --prefix)/share/zsh"
 2. Install chezmoi using brew 
     * `brew install chezmoi`
 3. Init chezmoich
