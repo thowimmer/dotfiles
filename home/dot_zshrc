@@ -165,11 +165,10 @@ then
 fi
 
 ##########################################
-# Rancher Desktop
-# https://rancherdesktop.io/
+# Podman
+# https://github.com/containers/podman
 ##########################################
-export PATH="/Users/thomas.wimmer/.rd/bin:$PATH"
-
+alias docker="podman"
 
 ##########################################
 # Whalebrew
