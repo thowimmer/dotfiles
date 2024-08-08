@@ -4,6 +4,8 @@ kubectl = "latest"
 kubectx = "latest"
 k9s = "latest"
 node = "lts"
+"npm:git-removed-branches" = "latest"
 
 [settings]
 disable_tools = ['bun','deno','ruby']
+experimental = true
